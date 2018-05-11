@@ -1,0 +1,1 @@
+"""package solver contains the algorithms of resolution"""
