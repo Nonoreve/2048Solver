@@ -23,6 +23,8 @@ class Game:
         self.score = 0
         self.nbMoves = 0
         self.grid = Grid(nbColumn, nbRow)
+        self.grid.spawnOneRandom()
+        self.grid.spawnOneRandom()
 
     def play(self, moveDirection):
         ''' To call when a move is played. moveDirection is one of the constants defined above (UP, DOWN...) '''

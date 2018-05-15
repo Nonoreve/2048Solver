@@ -3,6 +3,7 @@ Created on 11 mai 2018
 
 @author: nonoreve
 '''
+from engine.Tile import Tile
 
 
 class Square:
@@ -22,6 +23,13 @@ class Square:
             return 0
         else:
             return self.tileValue.value
+    
+    def setTileValue(self, tileValue):
+        self.tileValue = Tile(tileValue)
+        
+    def clearTile(self):
+        self.tileValue = "EMPTY"
+        
     def isEmpty(self):
         if self.tileValue == "EMPTY":
             return True

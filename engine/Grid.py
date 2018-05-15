@@ -17,10 +17,10 @@ class Grid():
         self.gridContent = []  # la liste principale
         self.nbColumn = nbColumn
         self.nbRow = nbRow
-        for x in nbColumn:
-            self.gridContent[x] = []  # on remplit chaque colonne par une liste vide
-            for y in nbRow:
-                self.gridContent[x][y] = Square()  # on remplit chaque case par une nouvelle instance de case
+        for x in range(0, nbColumn):
+            self.gridContent.append([])  # on remplit chaque colonne par une liste vide
+            for y in range(0, nbRow):
+                self.gridContent[x].append(Square())  # on remplit chaque case par une nouvelle instance de case
 
     def update(self, moveDirection):
         ''' update '''
@@ -32,7 +32,7 @@ class Grid():
             randX = randrange(self.nbColumn)
             randY = randrange(self.nbRow)
             if self.isSquareEmpty(randX, randY):
-                self.gridContent[randX][randY] = tileValue
+                self.gridContent[randX][randY].setTileValue(tileValue)
                 done = True
         
     def getSquareAt(self, posX, posY):
