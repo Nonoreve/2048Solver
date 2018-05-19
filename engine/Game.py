@@ -22,9 +22,9 @@ class Game:
         self.grid.spawnOneRandom()
 
     def play(self, moveDirection):
-        ''' To call when a move is played. moveDirection is one of the constants defined above (UP, DOWN...) '''
+        ''' To call when a move is played. moveDirection is one of the constants defined in Grid (UP, DOWN...) '''
         self.grid.update(moveDirection)
-        if randrange(9) >= 8:
+        if randrange(10) >= 9:
             tileValue = 4
         else:
             tileValue = 2

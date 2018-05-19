@@ -7,12 +7,20 @@ from engine.Game import Game
 
 def printGrid():
     print("grid : ")
-    for x in range(0, 4):
-        print("{} {} {} {}".format(game.getTileValue(x, 0), game.getTileValue(x, 1), game.getTileValue(x, 2), game.getTileValue(x, 3)))
-        
+    for y in range(0, 4):
+        print("{} {} {} {}".format(game.getTileValue(0, y), game.getTileValue(1, y), game.getTileValue(2, y), game.getTileValue(3, y)))
+    print()
 
 if __name__ == '__main__':
     game = Game()
     printGrid()
+    game.play("RIGHT")
+    printGrid()
     game.play("UP")
+    printGrid()
+    game.play("LEFT")
+    printGrid()
+    game.play("DOWN")
+    printGrid()
+    game.play("RIGHT")
     printGrid()
