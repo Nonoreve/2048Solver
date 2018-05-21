@@ -8,4 +8,3 @@ class UsefulVariables(object):
     '''
     classdocs
     '''
-    nbTiles = 16

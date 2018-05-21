@@ -9,3 +9,10 @@ class Tuile(Frame):
     '''
     classdocs
     '
+    '''
+    def __init__(self, panelDessus, valeur, height, width, bg, bd, highlightcolor, highlightbackground,highlightthickness,font, row , column):
+        Frame.__init__(self, panelDessus,  height = height, width  = width, bg = bg, bd = 10, highlightcolor= highlightcolor, highlightbackground= highlightbackground ,highlightthickness = highlightthickness)
+        self.valeur = int(valeur)
+        self.grid()
+        self.lblAffichage = Label(self, text=self.valeur)
+        self.lblAffichage.grid()
