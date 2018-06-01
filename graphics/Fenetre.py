@@ -65,9 +65,7 @@ class Fenetre():
             
         self.ArrayTiles = Grille(self.pnlArrayTiles, 4, 4)
         self.ArrayTiles.grid()
-        
-        self.ArrayTiles.MiseAJour(test)
-        
+                
         self.frBtns = Frame(self.FenetrePrincipale, pady = 15)
         self.frBtns.pack()
         
@@ -92,6 +90,8 @@ class Fenetre():
         lblRegles.configure(font = self.texte)
 
         self.FenetrePrincipale.frame()
-
-    def executeFenetre(self):
-        self.FenetrePrincipale.mainloop()
+        
+    def miseAJour(self, game):
+        self.ArrayTiles.MiseAJour(game)
+        
+    

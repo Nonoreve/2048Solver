@@ -4,9 +4,12 @@ Created on 18 mai 2018
 @author: willi
 '''
 
-from tkinter import *
+
+
 from graphics.Fenetre import *
 from graphics.Tuile import *
+from tkinter import *
+from engine.Game import *
 class Grille(Frame):
     '''
     classdocs
@@ -45,12 +48,12 @@ class Grille(Frame):
                 line.append(cell.valeur)
             self.data.append(line)
                 
-    def MiseAJour(self, grilleJeu):
-        self.data = grilleJeu
+    def MiseAJour(self, game):
+        #self.data = grilleJeu
         for w in self.winfo_children():
             w.destroy()
         for i in range(self.nbLines):
             for j in range(self.nbColumns):
-                cell = Tuile(self, valeur = grilleJeu[i][j], height = 150, width = 150, bg = 'white', bd = 10, highlightcolor="grey", highlightbackground="grey",highlightthickness=10, font = self.texte,row = i, column = j)
+                cell = Tuile(self, valeur = game.getTileValue(j,i), height = 150, width = 150, bg = 'white', bd = 10, highlightcolor="grey", highlightbackground="grey",highlightthickness=10, font = self.texte,row = i, column = j)
                 cell.grid(row = i, column = j)
                 
