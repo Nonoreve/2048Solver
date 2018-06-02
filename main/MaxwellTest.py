@@ -21,7 +21,7 @@ def gestionInput(event):
     touche = event.keysym
     print(touche)
     if touche == "Up":
-        game.play("Up")
+        game.play("UP")
     if touche == "Down":
         game.play("DOWN")
     if touche == "Right":
