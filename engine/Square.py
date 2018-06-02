@@ -14,24 +14,27 @@ class Square:
 
     def __init__(self, posX, posY):
         '''  Constructor '''
-        self.tileValue = "EMPTY"
+        self.innerTile = "EMPTY"
         self.posX = posX
         self.posY = posY
         
     def getTileValue(self):
-        if self.tileValue == "EMPTY":
+        if self.innerTile == "EMPTY":
             return 0
         else:
-            return self.tileValue.value
+            #print("tileVal = {}".format(self.innerTile.value))
+            return self.innerTile.value
     
     def setTileValue(self, tileValue):
-        self.tileValue = Tile(tileValue)
+        self.innerTile = Tile(tileValue)
         
     def clearTile(self):
-        self.tileValue = "EMPTY"
+        self.innerTile = "EMPTY"
         
     def isEmpty(self):
-        if self.tileValue == "EMPTY":
+        if self.innerTile == "EMPTY":
+            #print("EMPTY : x= {} y= {}".format(self.posX, self.posY))
             return True
         else:
+            #print("NOT empty -> {} : x= {} y= {}".format(self.getTileValue(), self.posX, self.posY))
             return False
