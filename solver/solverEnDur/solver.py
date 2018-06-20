@@ -27,6 +27,7 @@ class IA:
             if game_state == 'lose' :
                 return -float("inf")
             
+<<<<<<< HEAD
             snake = []            
             """Mise de toutes les valeurs de la grille dans une liste d'entiers 1D """
             for i, col in enumerate(zip(*matrix)):
@@ -34,6 +35,19 @@ class IA:
                 
             """m prend la valeur maximale de la liste"""
             m = max(snake)
+=======
+            snake = [] 
+            sortedSnake = []           
+            """Mise de toutes les valeurs de la grille dans une liste d'entiers 1D """
+            for i, col in enumerate(zip(*matrix)):
+                snake.extend(reversed(col) if i % 2 == 0 else col)
+                sortedSnake.extend(reversed(col) if i % 2 == 0 else col)
+            """m prend la valeur maximale de la liste"""
+            m = max(snake)
+            sortedSnake.sort(reverse = True)
+            print(sortedSnake)
+            print(snake)
+>>>>>>> master
             #smooth = - self.eval_smoothness(matrix)
             #valeurs = []
             #print(max(snake))
@@ -50,8 +64,22 @@ class IA:
             
             #return mulArr(matrix, valeurs) - \ b  
                 #math.pow((matrix[3][0] != m)*abs(matrix[3][0] - m), 2)
+<<<<<<< HEAD
             return sum(x/10**n for n, x in enumerate(snake)) - \
                 math.pow((matrix[3][0] != m)*abs(matrix[3][0] - m), 2)
+=======
+            #print( sum(x/10**n for n, x in enumerate(snake)) - \
+                #math.pow((matrix[3][0] != m)*abs(matrix[3][0] - m), 2))
+            
+            valuation = 0
+            for i in range(0,15):
+                if snake[i] == sortedSnake[i]:
+                    valuation += math.pow(sortedSnake[i],10/10**(i+1))
+                else :
+                    valuation -= math.pow(sortedSnake[i],10/10**(i+1))**2
+            print(valuation)
+            return valuation
+>>>>>>> master
             #return smooth
 
                    
@@ -81,6 +109,7 @@ class IA:
                 #print(zeros)
                 for i, j in zeros:
                     c1 = [[x for x in row] for row in matrix]
+<<<<<<< HEAD
                     #c2 = [[x for x in row] for row in matrix]
                     c1[i][j] = 2
                     #c2[i][j] = 4
@@ -88,6 +117,14 @@ class IA:
                     #alpha += .9*search(c1, d-1, True)/len(zeros) + \
                               #.1*search(c2, d-1, True)/len(zeros)
                     alpha += search(c1, d-1, True)/len(zeros)
+=======
+                    c2 = [[x for x in row] for row in matrix]
+                    c1[i][j] = 2
+                    c2[i][j] = 4
+                    #le 0.9 et le 0.1 sont pour les proportions de 2 ou de 4
+                    alpha += .9*search(c1, d-1, True)/len(zeros) + \
+                             .1*search(c2, d-1, True)/len(zeros)
+>>>>>>> master
             return alpha
         
         return [(action, search(child[0], d=5)) for action ,child in (maFen.actions())]
@@ -99,6 +136,26 @@ class IA:
         by aimove.
         """
         while game_state(maFen.matrix) != 'lose':
+<<<<<<< HEAD
+=======
+
+            action = max(self.aimove(maFen = maFen, matrix = maFen.matrix), key = lambda x: x[1])[0]
+            if action == "left" : 
+                maFen.key_downSim(KEY_LEFT)
+                print("left")
+            if action == "right": 
+                maFen.key_downSim(KEY_RIGHT)
+                print("right")
+            if action == "up"   :
+                maFen.key_downSim(KEY_UP)
+                print("up")
+            if action == "down" : 
+                maFen.key_downSim(KEY_DOWN)
+                print("down")
+            print(maFen.matrix)
+
+        return maFen.matrix
+>>>>>>> master
 
             action = max(self.aimove(maFen = maFen, matrix = maFen.matrix), key = lambda x: x[1])[0]
             if action == "left" : 
@@ -116,6 +173,5 @@ class IA:
             #print(maFen.matrix)
 
         return maFen.matrix
-        
         
         
