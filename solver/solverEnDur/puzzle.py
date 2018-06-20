@@ -26,6 +26,12 @@ KEY_DOWN = "'s'"
 KEY_LEFT = "'q'"
 KEY_RIGHT = "'d'"
 
+MERGE_FUNCTIONS = {
+    'left': left,
+    'right': right,
+    'up': up,
+    'down': down
+}
 
 class GameGrid(Frame):
     def __init__(self):
@@ -44,6 +50,7 @@ class GameGrid(Frame):
         self.init_matrix()
         self.update_grid_cells()
 
+        b = self.grid_cells
         #self.mainloop()
 
     def init_grid(self):
@@ -71,6 +78,9 @@ class GameGrid(Frame):
         self.matrix = add_two(self.matrix)
         self.matrix = add_two(self.matrix)
 
+    def cellOccupied(self, x, y):
+        return self.matrix[x][y] != 0
+    
     def update_grid_cells(self):
         for i in range(GRID_LEN):
             for j in range(GRID_LEN):
@@ -116,6 +126,19 @@ class GameGrid(Frame):
         while self.matrix[index[0]][index[1]] != 0:
             index = (self.gen(), self.gen())
         self.matrix[index[0]][index[1]] = 2
+        
 
+    def actions(self):
+        """ Generate the subsequent board after moving """
+
+        def moved(matrix, t):
+            return any(x != y for x, y in zip(matrix, t)) 
+        
+        """ Determine quels mouvements sont possibles : retourne un tuple avec l'action realisee et 't' etant la grille resultant du mouvement effectue. """
+        for action, f in [("left",left), ("down",down), ("up",up), ("right",right)]:
+            t = f(self.matrix)
+            """Si il s'est passe quelque chose, on envoie, sinon non"""
+            if moved(self.matrix, t[0]):
+                yield action, t
 
 #gamegrid = GameGrid()
