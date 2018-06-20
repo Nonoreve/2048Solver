@@ -3,8 +3,10 @@ Created on 11 mai 2018
 
 @author: nonoreve
 '''
-from engine.Grid import Grid
+import copy
 from random import randrange
+
+from engine.Grid import Grid
 
 
 class Game:
@@ -22,14 +24,56 @@ class Game:
         self.grid.spawnOneRandom()
 
     def play(self, moveDirection):
-        ''' To call when a move is played. moveDirection is one of the constants defined in Grid (UP, DOWN...) '''
-        self.grid.update(moveDirection)
-        if randrange(10) >= 9:
-            tileValue = 4
+        ''' To call when a move is played. 
+        moveDirection is one of the constants defined in Grid (UP, DOWN...)
+        return negative number in case of error (wrong moveDirection)
+        if lose (grid full) return 666
+        if win return True
+        return False in other cases '''
+        if self.canPlay(moveDirection):
+            gameState = self.grid.update(moveDirection)
+            if gameState == 0:
+                if randrange(10) >= 9:
+                    tileValue = 4
+                else:
+                    tileValue = 2
+                self.grid.spawnOneRandom(tileValue)
+                if self.grid.isGridFull() and not self.canMove():
+                    print("LOSE")
+                    return 666
+                else:
+                    y = 0
+                    winTileFound = False
+                    while not winTileFound and y < self.grid.nbRow:
+                        x = 0
+                        while not winTileFound and x < self.grid.nbRow:
+                            winTileFound = self.getTileValue(x, y) == 2048
+                            x += 1
+                        y += 1
+                    return winTileFound
+            else:
+                return gameState
         else:
-            tileValue = 2
-        self.grid.spawnOneRandom(tileValue)
+            print("Can't move that way")
         
     def getTileValue(self, xCoord, yCoord):
         ''' To get the value of any tile on the grid '''
         return self.grid.getSquareAt(xCoord, yCoord).getTileValue()
+    
+    def canPlay(self, moveDirection):
+        ''' test if the move in the given direction will change something '''
+        gridCopy = copy.deepcopy(self.grid)
+        gridCopy.update(moveDirection)
+        y = 0
+        changeFound = False
+        while not changeFound and y < self.grid.nbRow:
+            x = 0
+            while not changeFound and x < self.grid.nbRow:
+                changeFound = gridCopy.getSquareAt(x, y).getTileValue() != self.grid.getSquareAt(x, y).getTileValue()
+                x += 1
+            y += 1
+        return changeFound
+    
+    def canMove(self):
+        ''' test if we can play in any direction '''
+        return self.canPlay("UP") or self.canPlay("DOWN") or self.canPlay("LEFT")or self.canPlay("RIGHT")

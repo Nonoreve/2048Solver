@@ -34,67 +34,107 @@ class Grid():
             for y in range(0, self.nbRow - 1):
                 # print("next row")
                 for x in range(0, self.nbColumn):
-                    if self.isSquareEmpty(x, y):
-                        # si la case est vide, on cherche des tuiles a décaler
+                    y2 = y
+                    tileFound = False
+                    # on cherche la premiere tuile dans la colonne
+                    while not tileFound and y2 < self.nbRow:
+                        tileFound = not self.isSquareEmpty(x, y2)
+                        y2 += 1
+                    if tileFound:
+                        # print("found")
+                        y2 -= 1
+                        y3 = y2
                         tileFound = False
-                        y2 = y
-                        while not tileFound and y2 < self.nbRow - 1:
-                            y2 += 1
-                            tileFound = not self.isSquareEmpty(x, y2)
+                        # on cherche une deuxiemme
+                        while not tileFound and y3 < self.nbRow - 1:
+                            y3 += 1
+                            tileFound = not self.isSquareEmpty(x, y3)
+                            # print("{} {} {} {} {}".format(tileFound, y2, y3, self.getSquareAt(x, y2).getTileValue(), self.getSquareAt(x, y3).getTileValue()))
                         if tileFound:
-                            # print("found")
+                            # si la deuxiemme est de meme valeur
+                            if self.getSquareAt(x, y2).getTileValue() == self.getSquareAt(x, y3).getTileValue():
+                                print("merge : {}, {}".format(x, y2))
+                                self.getSquareAt(x, y2).setTileValue(self.getSquareAt(x, y2).getTileValue() * 2)
+                                self.getSquareAt(x, y3).clearTile()
+                        if self.isSquareEmpty(x, y):
+                            print("move")
+                            # si la case est vide, on cherche des tuiles a décaler
                             self.moveSquareTo(self.getSquareAt(x, y2), x, y)
-                            
+            return 0
         elif moveDirection == Grid.DOWN:
             # on parcourt la grille de bas en haut
             for y in range(self.nbRow - 1, 0, -1):
-                # print("next row")
                 for x in range(0, self.nbColumn):
-                    if self.isSquareEmpty(x, y):
-                        # si la case est vide, on cherche des tuiles a décaler
+                    y2 = y
+                    tileFound = False
+                    while not tileFound and y2 >= 0:
+                        tileFound = not self.isSquareEmpty(x, y2)
+                        y2 -= 1
+                    if tileFound:
+                        y2 += 1
+                        y3 = y2
                         tileFound = False
-                        y2 = y
-                        while not tileFound and y2 > 0:
-                            y2 -= 1
-                            tileFound = not self.isSquareEmpty(x, y2)
+                        # on cherche une deuxiemme de meme valeur
+                        while not tileFound and y3 > 0:
+                            y3 -= 1
+                            tileFound = not self.isSquareEmpty(x, y3)
                         if tileFound:
-                            # print("found")
+                            if self.getSquareAt(x, y2).getTileValue() == self.getSquareAt(x, y3).getTileValue():
+                                self.getSquareAt(x, y2).setTileValue(self.getSquareAt(x, y2).getTileValue() * 2)
+                                self.getSquareAt(x, y3).clearTile()
+                        if self.isSquareEmpty(x, y):
+                            # si la case est vide, on cherche des tuiles a décaler
                             self.moveSquareTo(self.getSquareAt(x, y2), x, y)
-                            
+            return 0
         elif moveDirection == Grid.LEFT:
             # on parcourt la grille de gauche à droite
             for x in range(0, self.nbColumn - 1):
-                # print("next row")
                 for y in range(0, self.nbRow):
-                    if self.isSquareEmpty(x, y):
-                        # si la case est vide, on cherche des tuiles a décaler
+                    x2 = x
+                    tileFound = False
+                    while not tileFound and x2 < self.nbColumn:
+                        tileFound = not self.isSquareEmpty(x2, y)
+                        x2 += 1
+                    if tileFound:
+                        x2 -= 1
+                        x3 = x2
                         tileFound = False
-                        x2 = x
-                        while not tileFound and x2 < self.nbColumn - 1:
-                            x2 += 1
-                            tileFound = not self.isSquareEmpty(x2, y)
+                        while not tileFound and x3 < self.nbColumn - 1:
+                            x3 += 1
+                            tileFound = not self.isSquareEmpty(x3, y)
                         if tileFound:
-                            # print("found")
+                            if self.getSquareAt(x2, y).getTileValue() == self.getSquareAt(x3, y).getTileValue():
+                                self.getSquareAt(x2, y).setTileValue(self.getSquareAt(x2, y).getTileValue() * 2)
+                                self.getSquareAt(x3, y).clearTile()
+                        if self.isSquareEmpty(x, y):
                             self.moveSquareTo(self.getSquareAt(x2, y), x, y)
-                            
+            return 0
         elif moveDirection == Grid.RIGHT:
             # on parcourt la grille de droite à gauche
             for x in range(self.nbColumn - 1, 0, -1):
-                # print("next row")
                 for y in range(0, self.nbRow):
-                    if self.isSquareEmpty(x, y):
-                        # si la case est vide, on cherche des tuiles a décaler
+                    x2 = x
+                    tileFound = False
+                    while not tileFound and x2 >= 0:
+                        tileFound = not self.isSquareEmpty(x2, y)
+                        x2 -= 1
+                    if tileFound:
+                        x2 += 1
+                        x3 = x2
                         tileFound = False
-                        x2 = x
-                        while not tileFound and x2 > 0:
-                            x2 -= 1
-                            tileFound = not self.isSquareEmpty(x2, y)
+                        while not tileFound and x3 > 0:
+                            x3 -= 1
+                            tileFound = not self.isSquareEmpty(x3, y)
                         if tileFound:
-                            # print("found")
+                            if self.getSquareAt(x2, y).getTileValue() == self.getSquareAt(x3, y).getTileValue():
+                                self.getSquareAt(x2, y).setTileValue(self.getSquareAt(x2, y).getTileValue() * 2)
+                                self.getSquareAt(x3, y).clearTile()
+                        if self.isSquareEmpty(x, y):
                             self.moveSquareTo(self.getSquareAt(x2, y), x, y)
-            
+            return 0
         else:
             print("Error : wrong moveDirection value")
+            return -1
 
     def spawnOneRandom(self, tileValue=2):
         ''' spawn a tile of the given value in a free square '''
@@ -116,10 +156,15 @@ class Grid():
         squareOrigin.clearTile()
     
     def isSquareEmpty(self, xPos, yPos):
-        # print("x= {} y= {}".format(xPos, yPos))
         return self.getSquareAt(xPos, yPos).isEmpty()
     
     def isGridFull(self):
         y = 0
-        while y < self.nbRow:
-            pass
+        emptyFound = False
+        while not emptyFound and y < self.nbRow:
+            x = 0
+            while not emptyFound and x < self.nbRow:
+                emptyFound = self.isSquareEmpty(x, y)
+                x += 1
+            y += 1
+        return not emptyFound
