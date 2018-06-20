@@ -78,6 +78,9 @@ class GameGrid(Frame):
         self.matrix = add_two(self.matrix)
         self.matrix = add_two(self.matrix)
 
+    def cellOccupied(self, x, y):
+        return self.matrix[x][y] != 0
+    
     def update_grid_cells(self):
         for i in range(GRID_LEN):
             for j in range(GRID_LEN):

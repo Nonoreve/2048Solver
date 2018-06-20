@@ -128,7 +128,3 @@ class IA:
             print(maFen.matrix)
 
         return maFen.matrix
-
-    
-        
-        
