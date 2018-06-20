@@ -33,11 +33,11 @@ class IHM(Frame):
   
     def sumCol(self): 
         for j in range(self.numberColumns): 
-            result = int(0) 
+            results = int(0) 
             for i in range(self.numberLines): 
-                result += int(self.data[i][j].get()) 
+                results += int(self.data[i][j].get()) 
             self.results[j].delete(0, END) 
-            self.results[j].insert(0, result)
+            self.results[j].insert(0, results)
             
 fenetre = Tk() 
 interface = IHM(fenetre, 4, 4) 
