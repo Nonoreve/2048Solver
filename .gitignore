@@ -1,3 +1,7 @@
 .project
 .pydevproject
+<<<<<<< HEAD
 /graphics/TestGrille.py
+=======
+graphics/TestGrille
+>>>>>>> 1185e7c62fffd0570dd0b90ea8611b4f00966c39
