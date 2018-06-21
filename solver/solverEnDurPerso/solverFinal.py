@@ -7,6 +7,8 @@ from pip._vendor.urllib3.connectionpool import xrange
 from logic import *
 from puzzle import *
 
+#imports jeu de noe
+from game import *
 
 class IA:
     
@@ -24,7 +26,7 @@ class IA:
             occur along this path. We penalize t he board for not having
             the highest valued tile in the lower left corner
             """
-            if game_state == 'lose' :
+            if matrix.canPlay() :
                 return -float("inf")
             
             snake = [] 
@@ -80,7 +82,7 @@ class IA:
                  possible child spawns, and return their weighted average 
                  as that node's evaluation   
             """
-            if d == 0 or (move and game_state(matrix) == 'lose'):
+            if d == 0 or (move and matrix == False):
                 return fitness(matrix)
                                 
             alpha = fitness(matrix)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
