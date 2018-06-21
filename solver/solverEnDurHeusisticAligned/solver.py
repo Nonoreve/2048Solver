@@ -6,9 +6,8 @@ from pip._vendor.urllib3.connectionpool import xrange
 
 from logic import *
 from puzzle import *
+from lib2to3.tests.test_parser import TestMatrixMultiplication
 
-#imports jeu de noe
-from game import *
 
 class IA:
     
@@ -26,20 +25,21 @@ class IA:
             occur along this path. We penalize t he board for not having
             the highest valued tile in the lower left corner
             """
-            if matrix.canPlay() :
+            if game_state(matrix) == 'lose' :
                 return -float("inf")
             
+
             snake = [] 
-            sortedSnake = []           
+            sortedSnake = [[3,2,1,0],[4,3,2,1],[5,4,3,2],[6,5,4,3]]           
             """Mise de toutes les valeurs de la grille dans une liste d'entiers 1D """
             for i, col in enumerate(zip(*matrix)):
                 snake.extend(reversed(col) if i % 2 == 0 else col)
-                sortedSnake.extend(reversed(col) if i % 2 == 0 else col)
+                #sortedSnake.extend(reversed(col) if i % 2 == 0 else col)
             """m prend la valeur maximale de la liste"""
             m = max(snake)
             sortedSnake.sort(reverse = True)
-            print(sortedSnake)
-            print(snake)
+            #print(sortedSnake)
+            #print(snake)
             #smooth = - self.eval_smoothness(matrix)
             #valeurs = []
             #print(max(snake))
@@ -56,16 +56,80 @@ class IA:
             
             #return mulArr(matrix, valeurs) - \ b  
                 #math.pow((matrix[3][0] != m)*abs(matrix[3][0] - m), 2)
+
             #print( sum(x/10**n for n, x in enumerate(snake)) - \
                 #math.pow((matrix[3][0] != m)*abs(matrix[3][0] - m), 2))
             
             valuation = 0
-            for i in range(0,15):
-                if snake[i] == sortedSnake[i]:
-                    valuation += math.pow(sortedSnake[i],10/10**(i+1))
-                else :
-                    valuation -= math.pow(sortedSnake[i],10/10**(i+1))**2
-            print(valuation)
+            #for i in range(0,15):
+            #    if snake[i] == sortedSnake[i]:
+            #        valuation += math.pow(sortedSnake[i],10/10**(i+1))
+            #    else :
+            #        valuation -= math.pow(sortedSnake[i],10/10**(i+1))**2
+            
+            for i in range(0, 4):  
+                for j in range(0, 4):
+                    valuation += matrix[i][j] * sortedSnake[i][j]
+                    
+            #for each tile
+            #for each neighbor
+            #penalty += absolute(tile value - neighbor value)
+            
+            penalty = 0
+            for i in range(0,4):  
+                for j in range(0,4):
+                    if i == 0: 
+                        if j == 0:
+                            penalty += abs(matrix[i][j]-matrix[i+1][j])
+                            penalty += abs(matrix[i][j]-matrix[i][j+1])
+                        elif j == 3:
+                            penalty += abs(matrix[i][j]-matrix[i][j-1])
+                            penalty += abs(matrix[i][j]-matrix[i+1][j])
+                        else :
+                            penalty += abs(matrix[i][j]-matrix[i+1][j])
+                            penalty += abs(matrix[i][j]-matrix[i][j-1])
+                            penalty += abs(matrix[i][j]-matrix[i][j+1])
+                    elif i == 3:
+                        if j == 0:
+                            penalty += abs(matrix[i][j]-matrix[i-1][j])
+                            penalty += abs(matrix[i][j]-matrix[i][j+1])
+                        elif j == 3:
+                            penalty += abs(matrix[i][j]-matrix[i][j-1])
+                            penalty += abs(matrix[i][j]-matrix[i-1][j])
+                        else :
+                            penalty += abs(matrix[i][j]-matrix[i-1][j])
+                            penalty += abs(matrix[i][j]-matrix[i][j-1])
+                            penalty += abs(matrix[i][j]-matrix[i][j+1])
+                            
+                    elif j == 0: 
+                        if i == 0:
+                            penalty += abs(matrix[i][j]-matrix[i+1][j])
+                            penalty += abs(matrix[i][j]-matrix[i][j+1])
+                        elif i == 3:
+                            penalty += abs(matrix[i][j]-matrix[i][j+1])
+                            penalty += abs(matrix[i][j]-matrix[i-1][j])
+                        else :
+                            penalty += abs(matrix[i][j]-matrix[i+1][j])
+                            penalty += abs(matrix[i][j]-matrix[i][j+1])
+                            penalty += abs(matrix[i][j]-matrix[i-1][j])
+                    elif j == 3:
+                        if i == 0:
+                            penalty += abs(matrix[i][j]-matrix[i][j-1])
+                            penalty += abs(matrix[i][j]-matrix[i+1][j])
+                        elif i == 3:
+                            penalty += abs(matrix[i][j]-matrix[i][j-1])
+                            penalty += abs(matrix[i][j]-matrix[i-1][j])
+                        else :
+                            penalty += abs(matrix[i][j]-matrix[i-1][j])
+                            penalty += abs(matrix[i][j]-matrix[i][j-1])
+                            penalty += abs(matrix[i][j]-matrix[i+1][j])
+                    else:
+                        penalty += abs(matrix[i][j]-matrix[i-1][j])
+                        penalty += abs(matrix[i][j]-matrix[i][j-1])
+                        penalty += abs(matrix[i][j]-matrix[i][j+1])
+                        penalty += abs(matrix[i][j]-matrix[i+1][j])
+
+            valuation -= penalty
             return valuation
             #return smooth
 
@@ -82,7 +146,8 @@ class IA:
                  possible child spawns, and return their weighted average 
                  as that node's evaluation   
             """
-            if d == 0 or (move and matrix == False):
+            if d == 0 or (move and game_state(matrix) == 'lose'):
+                print([move, game_state(matrix)])
                 return fitness(matrix)
                                 
             alpha = fitness(matrix)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
@@ -96,15 +161,18 @@ class IA:
                 #print(zeros)
                 for i, j in zeros:
                     c1 = [[x for x in row] for row in matrix]
-                    c2 = [[x for x in row] for row in matrix]
+                    #c2 = [[x for x in row] for row in matrix]
                     c1[i][j] = 2
-                    c2[i][j] = 4
+                    #c2[i][j] = 4
                     #le 0.9 et le 0.1 sont pour les proportions de 2 ou de 4
-                    alpha += .9*search(c1, d-1, True)/len(zeros) + \
-                             .1*search(c2, d-1, True)/len(zeros)
+                    #alpha += .9*search(c1, d-1, True)/len(zeros) + \
+                              #.1*search(c2, d-1, True)/len(zeros)
+                    alpha += search(c1, d-1, True)/len(zeros)
+            #print(matrix)
+            print(alpha)
             return alpha
         
-        return [(action, search(child[0], d=5)) for action ,child in (maFen.actions())]
+        return [(action, search(child[0], d=6)) for action ,child in (maFen.actions())]
             #Prochaine intervention : cette procedure TESTE les valeurs possibles, ainsi, il faut envoyer dans le return une grille de test
             #On doit donc ecrire une procedure qui genere une fausse grille
     def aiplay(self, maFen, matrix):
@@ -112,7 +180,8 @@ class IA:
         Runs the game playing the move that determined
         by aimove.
         """
-        while matrix.canPlay():
+        while game_state(maFen.matrix) != 'lose':
+
 
             action = max(self.aimove(maFen = maFen, matrix = maFen.matrix), key = lambda x: x[1])[0]
             if action == "left" : 
@@ -130,3 +199,5 @@ class IA:
             print(maFen.matrix)
 
         return maFen.matrix
+        
+        

@@ -24,7 +24,8 @@ class IA:
             occur along this path. We penalize t he board for not having
             the highest valued tile in the lower left corner
             """
-            if game_state == 'lose' :
+            if game_state(matrix) == 'lose' :
+                print("rate")
                 return -float("inf")
             
 
@@ -33,11 +34,11 @@ class IA:
             """Mise de toutes les valeurs de la grille dans une liste d'entiers 1D """
             for i, col in enumerate(zip(*matrix)):
                 snake.extend(reversed(col) if i % 2 == 0 else col)
-                sortedSnake.extend(reversed(col) if i % 2 == 0 else col)
+                #sortedSnake.extend(reversed(col) if i % 2 == 0 else col)
             """m prend la valeur maximale de la liste"""
             m = max(snake)
-            sortedSnake.sort(reverse = True)
-            print(sortedSnake)
+            #sortedSnake.sort(reverse = True)
+            #print(sortedSnake)
             print(snake)
             #smooth = - self.eval_smoothness(matrix)
             #valeurs = []
@@ -56,17 +57,17 @@ class IA:
             #return mulArr(matrix, valeurs) - \ b  
                 #math.pow((matrix[3][0] != m)*abs(matrix[3][0] - m), 2)
 
-            #print( sum(x/10**n for n, x in enumerate(snake)) - \
-                #math.pow((matrix[3][0] != m)*abs(matrix[3][0] - m), 2))
+            return ( sum(x/10**n for n, x in enumerate(snake)) - \
+                math.pow((matrix[3][0] != m)*abs(matrix[3][0] - m), 2))
             
-            valuation = 0
-            for i in range(0,15):
-                if snake[i] == sortedSnake[i]:
-                    valuation += math.pow(sortedSnake[i],10/10**(i+1))
-                else :
-                    valuation -= math.pow(sortedSnake[i],10/10**(i+1))**2
-            print(valuation)
-            return valuation
+            #valuation = 0
+            #for i in range(0,15):
+            #    if snake[i] == sortedSnake[i]:
+             #       valuation += math.pow(sortedSnake[i],10/10**(i+1))
+             #   else :
+            #        valuation -= math.pow(sortedSnake[i],10/10**(i+1))**2
+            #print(valuation)
+            #return valuation
             #return smooth
 
                    
