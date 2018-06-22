@@ -7,6 +7,8 @@ import copy
 from random import randrange
 
 from engine.Grid import Grid
+from pygame.examples.aliens import Score
+import sys
 
 
 class Game:
@@ -27,38 +29,39 @@ class Game:
         ''' To call when a move is played. 
         moveDirection is one of the constants defined in Grid (UP, DOWN...)
         return negative number in case of error (wrong moveDirection)
-        if lose (grid full) return 666
+        if lose (grid full) return the score
         if win return True
         return False in other cases '''
         if self.canPlay(moveDirection):
             gameState = self.grid.update(moveDirection)
-            if gameState == 0:
-                if randrange(10) >= 9:
-                    tileValue = 4
-                else:
-                    tileValue = 2
-                self.grid.spawnOneRandom(tileValue)
-                if self.grid.isGridFull() and not self.canMove():
-                    print("LOSE")
-                    return 666
-                else:
-                    y = 0
-                    winTileFound = False
-                    while not winTileFound and y < self.grid.nbRow:
-                        x = 0
-                        while not winTileFound and x < self.grid.nbRow:
-                            winTileFound = self.getTileValue(x, y) == 2048
-                            x += 1
-                        y += 1
-                    return winTileFound
+            self.score += gameState
+            if randrange(10) >= 9:
+                tileValue = 4
             else:
-                return gameState
+                tileValue = 2
+            self.grid.spawnOneRandom(tileValue)
+            if self.grid.isGridFull() and not self.canMove():
+                #print("LOSE")
+                return self.score
+            else:
+                y = 0
+                winTileFound = False
+                while not winTileFound and y < self.grid.nbRow:
+                    x = 0
+                    while not winTileFound and x < self.grid.nbRow:
+                        winTileFound = self.getTileValue(x, y) == 2048
+                        x += 1
+                    y += 1
+                return winTileFound
         else:
-            print("Can't move that way")
+            sys.exit("Can't move that way")
         
     def getTileValue(self, xCoord, yCoord):
         ''' To get the value of any tile on the grid '''
         return self.grid.getSquareAt(xCoord, yCoord).getTileValue()
+    
+    def getScore(self):
+        return self.score
     
     def canPlay(self, moveDirection):
         ''' test if the move in the given direction will change something '''

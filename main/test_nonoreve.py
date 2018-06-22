@@ -52,7 +52,6 @@ if __name__ == '__main__':
     game = Game()
     while True:
         printPrettyGrid()
-        # printGrid()
         # on recupere input en majuscule
         play = input("please play :").upper()
         if play == "STOP":

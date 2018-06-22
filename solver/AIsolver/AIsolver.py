@@ -4,8 +4,11 @@ Created on 5 juin 2018
 @author: nonoreve
 '''
 
+from random import choice
 import random
+import time
 
+from engine.Game import Game
 from solver.AIsolver.GeneticNeuralNetwork import NeuralNetwork
 
 
@@ -52,67 +55,110 @@ def sliceTab(nbInputs, nbOutputs, nbNeuronPerHL, nbHiddenLayers, tab):
     return tabOfTabOfTab
 
 
+MOVES = ["UP", "DOWN", "RIGHT", "LEFT"]
+# 06 84 23 07 13
+
+
+def playTest(neuralNet):
+    game = Game()
+    while True:
+        gridInput = [game.getTileValue(x, y) for y in range(0, 4) for x in range(0, 4)]
+        # print("input " + str(gridInput))
+        tabOut = neuralNet.update(gridInput)
+        # print("output " + str(tabOut))
+        tupOut = [(i, tabOut[i]) for i in range(0, len(tabOut))]
+        # print("tuples " + str(tupOut))
+        tupOut.sort(key=getKey, reverse=True)
+        prior = 0
+        play = MOVES[tupOut[prior][0]]
+        while not game.canPlay(play):
+            prior += 1
+            play = MOVES[tupOut[prior][0]]
+        # print(play)
+        if play == "STOP":
+            break
+        gameState = game.play(play)
+        if type(gameState) == int:
+            # print("final grid " + str(gridInput))
+            return gameState
+        elif gameState == True:
+            print("\n ! ! ! ! ! WIN ! ! ! ! ! \n")
+
+
 if __name__ == '__main__':
+    # the save files
+    fitnessFile = open("fitnessFile.save", "a")
+    fitnessFile.write(time.strftime('%d/%m/%y %H:%M', time.localtime()) + '\n')
+    fitnessFile.flush()
+    weightsFile = open("weightsFile.save", "a")
+    weightsFile.write(time.strftime('%d/%m/%y %H:%M', time.localtime()) + '\n')
+    weightsFile.flush()
     # the current living network population
     population = []
     # create the original ancestors
-    POPULATION_SIZE = 8
+    POPULATION_SIZE = 600
     nbInputs, nbOutputs, nbNeuronPerHL, nbHiddenLayers = 16, 4, 10, 3
     nbWeights = nbInputs * (nbNeuronPerHL + 1) + (nbNeuronPerHL ** 2 + nbNeuronPerHL) * nbHiddenLayers + (nbNeuronPerHL + 1) * nbOutputs
-    print("ORIGINAL ANCESTORS\n")
+    # print("ORIGINAL ANCESTORS\n")
     for i in range(0, POPULATION_SIZE):
         # makes a flat tab with enough values
         weightsTab = []
         for _ in range(0, nbWeights):
             weightsTab.append(random.random())
         population.append(NeuralNetwork(nbInputs, nbOutputs, nbNeuronPerHL, nbHiddenLayers, sliceTab(nbInputs, nbOutputs, nbNeuronPerHL, nbHiddenLayers, weightsTab)))
-        print(str(population[i]) + '\n')
+        # print(str(population[i]) + '\n')
     
-    expectedResults = [0.1, 0.9, 0.1, 0.9]
-    inputs = [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]
-    
-    for _ in range(0, 1000):
+    for generation in range(0, 100):
+        print("GENERATION {}".format(generation + 1))
+        weightsFile.write("GENERATION {}".format(generation + 1) + '\n')
+        weightsFile.flush()
         # compute and sort the results
         results = []
-        for i in range(0, POPULATION_SIZE):
-            outputs = population[i].update(inputs)
-            err = error(outputs, expectedResults)
-            results.append((i, err))
-            print("outputs and error " + str([round(x, 3) for x in outputs]) + " = " + str(round(err, 3)))
-        # print(results)
-        results.sort(key=getKey, reverse=False)
-        # print(results)
+        #for i in range(0, POPULATION_SIZE):
+        #    fitness = playTest(population[i])
+        #    results.append((i, fitness))
+        #    print("fitness of num°{} = {}".format(i, fitness))
+        #    fitnessFile.write(str(fitness) + '\n')
+        #    fitnessFile.flush()
+        
+        # test all the network using multiprocessing
+        
+        # # print(results)
+        results.sort(key=getKey, reverse=True)
+        # # print(results)
         
         # kill the bad ones (the bottom half)
         results = results[:POPULATION_SIZE // 2]
-        print("selected ones " + str(results))
+        # print("selected ones " + str(results))
         survivors = []
         generationLoss = 0
         for i, x in results:
             survivors.append(population[i])
             generationLoss += x
         generationLoss /= len(results)
-        print("generation loss = " + str(generationLoss))
+        print("average fitness = " + str(generationLoss))
+        fitnessFile.write("G" + str(generationLoss) + '\n')
+        fitnessFile.flush()
         # print(population)
         # print(survivors)
-        
-        # compute the average weights of each survivor
-        averageWeights = flatTab(survivors[0].get_weights())
-        for nn in survivors[1:]:
-            nnWeights = nn.get_weights()
-            averageWeights = [x + y for x, y in zip(averageWeights, flatTab(nnWeights))]
-        for i, val in enumerate(averageWeights):
-            averageWeights[i] = val / len(survivors)
-        # averageWeights = sliceTab(nbInputs, nbOutputs, nbNeuronPerHL, nbHiddenLayers, averageWeights)
-        print("average " + str(averageWeights))
         
         # now reproduce the survivors
         nextgen = survivors
         for i in range(0, POPULATION_SIZE - len(survivors)):
             newWeights = []
-            for weight in averageWeights:
-                newWeights.append(weight + ((random.random() - 0.5) * generationLoss))
-            nextgen.append(NeuralNetwork(nbInputs, nbOutputs, nbNeuronPerHL, nbHiddenLayers, sliceTab(nbInputs, nbOutputs, nbNeuronPerHL, nbHiddenLayers, newWeights)))
-            print(nextgen[-1])
+            # for each new network we pick a random survivor
+            chosen = choice(survivors)
+            survivorGenes = flatTab(chosen.get_weights())
+            weightsFile.write("s" + str(survivorGenes[nbInputs * (nbNeuronPerHL + 1):]) + '\n')
+            weightsFile.flush()
+            for weight in survivorGenes:
+                newWeights.append(weight + ((random.random() - 0.5) * (100 / generationLoss)))
+            weightsFile.write("n" + str(newWeights[nbInputs * (nbNeuronPerHL + 1):]) + '\n')
+            weightsFile.flush()
+            slicedTab = sliceTab(nbInputs, nbOutputs, nbNeuronPerHL, nbHiddenLayers, newWeights)
+            nextgen.append(NeuralNetwork(nbInputs, nbOutputs, nbNeuronPerHL, nbHiddenLayers, slicedTab))
+            # print(nextgen[-1])
         population = nextgen
-    print("OVER " + generationLoss)
+    print("OVER " + str(generationLoss))
+    fitnessFile.close()
+    weightsFile.close()

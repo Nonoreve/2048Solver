@@ -1,4 +1,6 @@
 import math
+from cmath import isnan, isinf
+import sys
 
 BIAS = -1
 
@@ -103,6 +105,11 @@ class NeuralNetwork:
                 tot = neuron.sum(inputs) + neuron.weights[-1] * BIAS
                 outputs.append(self.sigmoid(tot))
             inputs = outputs
+        for val in outputs:
+            if isnan(val) or isinf(val):
+                print(self)
+                print(outputs)
+                sys.exit("WTF ?")
         return outputs
 
     def sigmoid(self, activation, response=1):
