@@ -1,5 +1,5 @@
 from tkinter import *
-from logic import *
+from solver.solverEnDur.logic import *
 from random import *
 
 SIZE = 500
@@ -37,7 +37,7 @@ class GameGrid(Frame):
     def __init__(self):
         Frame.__init__(self)
 
-        self.grid()
+        #self.grid()
         self.master.title('2048')
         self.master.bind("<Key>", self.key_down)
 
@@ -53,6 +53,9 @@ class GameGrid(Frame):
         b = self.grid_cells
         #self.mainloop()
 
+    def getTileValue(self, i, j):
+        return self.matrix[i][j]
+        
     def init_grid(self):
         background = Frame(self, bg=BACKGROUND_COLOR_GAME, width=SIZE, height=SIZE)
         background.grid()

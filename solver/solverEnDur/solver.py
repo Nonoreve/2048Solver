@@ -4,8 +4,8 @@ from random import *
 
 from pip._vendor.urllib3.connectionpool import xrange
 
-from logic import *
-from puzzle import *
+from solver.solverEnDur.logic import *
+from solver.solverEnDur.puzzle import *
 
 
 class IA:
@@ -14,6 +14,7 @@ class IA:
     def simulation(self, matrix, maFen):
         self.aiplay(maFen, matrix)
         print('Fin du programme')
+        return game_state(maFen.matrix)
     
     def aimove(self, matrix , maFen) :
         def fitness(matrix):
@@ -115,22 +116,22 @@ class IA:
         Runs the game playing the move that determined
         by aimove.
         """
-        while game_state(maFen.matrix) != 'lose':
+        #while game_state(maFen.matrix) != 'lose':
 
 
-            action = max(self.aimove(maFen = maFen, matrix = maFen.matrix), key = lambda x: x[1])[0]
-            if action == "left" : 
-                maFen.key_downSim(KEY_LEFT)
-                print("left")
-            if action == "right": 
-                maFen.key_downSim(KEY_RIGHT)
-                print("right")
-            if action == "up"   :
-                maFen.key_downSim(KEY_UP)
-                print("up")
-            if action == "down" : 
-                maFen.key_downSim(KEY_DOWN)
-                print("down")
+        action = max(self.aimove(maFen = maFen, matrix = maFen.matrix), key = lambda x: x[1])[0]
+        if action == "left" : 
+            maFen.key_downSim(KEY_LEFT)
+            print("left")
+        if action == "right": 
+            maFen.key_downSim(KEY_RIGHT)
+            print("right")
+        if action == "up"   :
+            maFen.key_downSim(KEY_UP)
+            print("up")
+        if action == "down" : 
+            maFen.key_downSim(KEY_DOWN)
+            print("down")
             #print(maFen.matrix)
 
         return maFen.matrix

@@ -1,7 +1,7 @@
 from solver import *
 
 maFen = GameGrid()
-Solver = IA()
+Solver = IAWaves()
 
 
 maFen.after(2000, Solver.simulation(matrix = maFen.matrix, maFen = maFen))

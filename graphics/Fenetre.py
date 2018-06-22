@@ -7,6 +7,9 @@ from tkinter import *
 
 from graphics.Grille import *
 
+from solver.solverEnDur.testSolver import *
+from solver import solverEnDur
+
 class Fenetre():
     '''
     classdocs
@@ -17,10 +20,11 @@ class Fenetre():
 
 
 
-    def __init__(self):
+    def __init__(self, game):
         #Definition de la police
         self.titre = "-family {DejaVu Sans} -size 32 -weight normal -slant roman -underline 0 -overstrike 0"
         self.texte = "-family {DejaVu Sans} -size 18 -weight normal -slant roman -underline 0 -overstrike 0"
+        self.monTesteur = Testeur(self)
         
         #Declaration de la fenetre
         self.FenetrePrincipale = Tk()
@@ -65,35 +69,37 @@ class Fenetre():
             test.append([4]*4)
             
             
-        self.ArrayTiles = Grille(self.pnlArrayTiles, 4, 4)
+        self.ArrayTiles = Grille.Grille(self.pnlArrayTiles, 4, 4)
         self.ArrayTiles.grid()
                 
         self.frBtns = Frame(self.FenetrePrincipale, pady = 15)
         self.frBtns.pack()
         
-        btnJouer = Button(self.frBtns, text="Jouer", commande=self.FenetrePrincipale.quit())
+        btnJouer = Button(self.frBtns, text="Algorithme Snake Pattern", command = self.monTesteur.TestAlgorithmeSnake)
         btnJouer.grid(row = 0, column = 0)
         btnJouer.configure(font = self.texte)
         
-        btnRecommencer = Button(self.frBtns, text ="Recommencer", commande = self.FenetrePrincipale.quit())
+        btnRecommencer = Button(self.frBtns, text ="Algorithme Waves Pattern", command = self.monTesteur.TestAlgorithmeWaves)
         btnRecommencer.grid(row = 0, column = 1)
         btnRecommencer.configure(font = self.texte)
         
-        btnResDur = Button(self.frBtns, text ="Algorithme en dur", commande = self.FenetrePrincipale.quit())
+        btnResDur = Button(self.frBtns, text ="Algorithme en Deep Learning", command = self.FenetrePrincipale.quit())
         btnResDur.grid(row = 0, column = 2)
         btnResDur.configure(font = self.texte)
         
-        btnResLearn = Button(self.frBtns, text ="Algorithme Deep Learning", commande = self.FenetrePrincipale.quit())
+        btnResLearn = Button(self.frBtns, text ="Recommencer", command = self.Recommencement)
         btnResLearn.grid(row = 0, column = 3)
         btnResLearn.configure(font = self.texte)
 
-        lblRegles = Label(self.FenetrePrincipale, text = "Pour jouer : ...")
+        lblRegles = Label(self.FenetrePrincipale, text = "Utilisez les touches directionnelles pour jouer.")
         lblRegles.pack()
         lblRegles.configure(font = self.texte)
-
+        self.miseAJour(game)
         self.FenetrePrincipale.frame()
         
     def miseAJour(self, game):
         self.ArrayTiles.MiseAJour(game)
-        
     
+    def Recommencement(self):
+        game = Game()
+        

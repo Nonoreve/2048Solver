@@ -6,9 +6,10 @@ Created on 18 mai 2018
 from graphics.Fenetre import Fenetre
 from engine.Game import *
 
-FormPrincipale = Fenetre()
-
 game = Game()
+FormPrincipale = Fenetre(game)
+
+
 
 
 def printGrid():
