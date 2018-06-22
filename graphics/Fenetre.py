@@ -87,7 +87,7 @@ class Fenetre():
         btnResDur.grid(row = 0, column = 2)
         btnResDur.configure(font = self.texte)
         
-        btnResLearn = Button(self.frBtns, text ="Recommencer", command = self.Recommencement)
+        btnResLearn = Button(self.frBtns, text ="Quitter", command = self.Recommencement)
         btnResLearn.grid(row = 0, column = 3)
         btnResLearn.configure(font = self.texte)
 
@@ -102,4 +102,5 @@ class Fenetre():
     
     def Recommencement(self):
         game = Game()
+        self.FenetrePrincipale.miseAJour(game)
         

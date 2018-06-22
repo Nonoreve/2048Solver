@@ -18,13 +18,7 @@ class IA:
     
     def aimove(self, matrix , maFen) :
         def fitness(matrix):
-            """
-            Returns the heuristic value of b
-            Snake refers to the "snake line pattern" (http://tinyurl.com/l9bstk6)
-            Here we only evaluate one direction; we award more points if high valued tiles
-            occur along this path. We penalize t he board for not having
-            the highest valued tile in the lower left corner
-            """
+
             if game_state(matrix) == 'lose' :
                 print("rate")
                 return -float("inf")
