@@ -52,8 +52,8 @@ class Grille(Frame):
         #self.data = grilleJeu
         for w in self.winfo_children():
             w.destroy()
-        for i in range(self.nbLines):
-            for j in range(self.nbColumns):
-                cell = Tuile(self, valeur = game.getTileValue(j,i), height = 150, width = 150, bg = 'white', bd = 10, highlightcolor="grey", highlightbackground="grey",highlightthickness=10, font = self.texte,row = i, column = j)
-                cell.grid(row = i, column = j)
+        for j in range(self.nbLines):
+            for i in range(self.nbColumns):
+                cell = Tuile(self, valeur = game.getTileValue(i,j), height = 150, width = 150, bg = 'white', bd = 10, highlightcolor="grey", highlightbackground="grey",highlightthickness=10, font = self.texte,row = i, column = j)
+                cell.grid(row = j, column = i)
                 
