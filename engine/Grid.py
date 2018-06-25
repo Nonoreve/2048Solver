@@ -62,7 +62,7 @@ class Grid():
                         if self.isSquareEmpty(x, y):
                             #print("move")
                             # si la case est vide, on cherche des tuiles a décaler
-                            self.moveSquareTo(self.getSquareAt(x, y2), x, y)
+                            self.moveTileTo(self.getSquareAt(x, y2), x, y)
             return bonus
         elif moveDirection == Grid.DOWN:
             # on parcourt la grille de bas en haut
@@ -88,7 +88,7 @@ class Grid():
                                 bonus = self.getSquareAt(x, y2).getTileValue()
                         if self.isSquareEmpty(x, y):
                             # si la case est vide, on cherche des tuiles a décaler
-                            self.moveSquareTo(self.getSquareAt(x, y2), x, y)
+                            self.moveTileTo(self.getSquareAt(x, y2), x, y)
             return bonus
         elif moveDirection == Grid.LEFT:
             # on parcourt la grille de gauche à droite
@@ -112,7 +112,7 @@ class Grid():
                                 self.getSquareAt(x3, y).clearTile()
                                 bonus = self.getSquareAt(x2, y).getTileValue()
                         if self.isSquareEmpty(x, y):
-                            self.moveSquareTo(self.getSquareAt(x2, y), x, y)
+                            self.moveTileTo(self.getSquareAt(x2, y), x, y)
             return bonus
         elif moveDirection == Grid.RIGHT:
             # on parcourt la grille de droite à gauche
@@ -136,7 +136,7 @@ class Grid():
                                 self.getSquareAt(x3, y).clearTile()
                                 bonus = self.getSquareAt(x2, y).getTileValue()
                         if self.isSquareEmpty(x, y):
-                            self.moveSquareTo(self.getSquareAt(x2, y), x, y)
+                            self.moveTileTo(self.getSquareAt(x2, y), x, y)
             return bonus
         else:
             sys.exit("Error : wrong moveDirection value")
@@ -155,7 +155,7 @@ class Grid():
     def getSquareAt(self, posX, posY):
         return self.gridContent[posY][posX]
     
-    def moveSquareTo(self, squareOrigin, newX, newY):
+    def moveTileTo(self, squareOrigin, newX, newY):
         """ place the tile in the given square at his new coordinates DO NOT CHECK IF EMPTY"""
         self.getSquareAt(newX, newY).setTileValue(squareOrigin.getTileValue())
         squareOrigin.clearTile()

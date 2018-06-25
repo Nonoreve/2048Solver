@@ -63,6 +63,13 @@ class Game:
     def getScore(self):
         return self.score
     
+    def getMaxTile(self):
+        maxT = self.getTileValue(0, 0)
+        for y in range(0, self.grid.nbColumn):
+            for x in range(0, self.grid.nbRow):
+                val = self.getTileValue(x, y)
+                maxT = val if val > maxT else maxT
+        return maxT
     def canPlay(self, moveDirection):
         ''' test if the move in the given direction will change something '''
         gridCopy = copy.deepcopy(self.grid)
